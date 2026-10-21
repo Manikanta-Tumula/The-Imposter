@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Imposter — one of you doesn't know the word</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23d9b26a'/><text x='50' y='70' font-size='54' font-family='Georgia' font-weight='700' text-anchor='middle' fill='%2314100b'>S</text></svg>" />
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+    <div class="grid"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <div id="toasts"></div>
+
+  <section id="screen-home" class="screen">
+    <div class="hero">
+      <p class="kicker glow-kicker">one word · one impostor · 3–8 players</p>
+      <h1 class="logo">THE <span>IMPOSTER</span></h1>
+      <p class="tagline">Three innocents share a secret word. One impostor fakes it.<br />Everyone speaks. Someone slips.</p>
+    </div>
+
+    <div class="menu">
+      <div class="card tilt">
+        <div class="card-head">
+          <span class="card-no">0X</span>
+          <h2>Choose your mode</h2>
+        </div>
+        <div class="mode-grid">
+          <button id="btn-mode-online" class="mode-card">
+            <span class="mode-title">Online rooms</span>
+            <span class="mode-desc">3–8 devices · room code · works with bots</span>
+          </button>
+          <button id="btn-mode-party" class="mode-card gold">
+            <span class="mode-title">Party mode</span>
+            <span class="mode-desc">One phone · speak clues out loud · pass &amp; play</span>
+          </button>
+        </div>
+      </div>
+      <div class="card tilt">
+        <div class="card-head">
+          <span class="card-no">01</span>
+          <h2>Create a room</h2>
+        </div>
+        <div class="row">
+          <input id="create-name" maxlength="12" placeholder="Your name" autocomplete="off" spellcheck="false" />
+          <button id="btn-create" class="btn primary">Create</button>
+        </div>
+      </div>
+      <div class="card tilt">
+        <div class="card-head">
+          <span class="card-no">02</span>
+          <h2>Join a room</h2>
+        </div>
+        <div class="row">
+          <input id="join-name" maxlength="12" placeholder="Your name" autocomplete="off" spellcheck="false" />
+          <input id="join-code" maxlength="4" placeholder="Code" class="code-input" autocomplete="off" spellcheck="false" />
+          <button id="btn-join" class="btn primary">Join</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-room" class="screen hidden">
+    <header class="room-header">
+      <div class="brand-mini logo">THE <span>IMPOSTER</span></div>
+      <div class="room-code">Room <b id="room-code-display">----</b></div>
+      <button id="btn-copy" class="btn ghost">Copy invite</button>
+      <button id="btn-voice" class="btn ghost">Voice: off</button>
+      <button id="btn-sound" class="btn ghost">Sound on</button>
+      <button id="btn-leave" class="btn ghost">Leave</button>
+    </header>
+    <div id="notice-bar" class="notice-bar hidden"></div>
+    <main id="phase-panel"></main>
+  </section>
+
+  <section id="screen-party" class="screen hidden">
+    <header class="room-header">
+      <div class="brand-mini logo">THE <span>IMPOSTER</span></div>
+      <div class="room-code">Party <b class="gold-code">mode</b></div>
+      <button id="btn-party-sound" class="btn ghost">Sound on</button>
+      <button id="btn-party-leave" class="btn ghost">Home</button>
+    </header>
+    <main id="party-panel"></main>
+  </section>
+
+  <script>
+    window.__susLoadFail = function (msg) {
+      var el = document.getElementById('load-error');
+      if (!el) {
+        el = document.createElement('div');
+        el.id = 'load-error';
+        el.style.cssText = 'position:fixed;inset:auto 12px 12px 12px;z-index:9999;background:#c0392b;color:#fff;padding:12px 14px;border-radius:10px;font:600 13px sans-serif;';
+        document.body.appendChild(el);
+      }
+      el.textContent = msg + ' — Online rooms need the game server: double-click "START GAME" in the project folder, then open http://localhost:3000. Party mode still works on this page.';
+    };
+    window.addEventListener('error', function (e) {
+      window.__susLoadFail(e && e.message ? e.message : 'Something failed to load');
+    });
+  </script>
+  <script src="/socket.io/socket.io.js" onerror="__susLoadFail('socket.io failed to load')"></script>
+  <script src="pairs.js"></script>
+  <script src="app.js" onerror="__susLoadFail('app.js failed to load')"></script>
+</body>
+</html>

@@ -451,8 +451,13 @@ function createGameServer() {
   } catch (e) {}
 
 
+  app.get('/api/hello', (req, res) => {
+    res.json({ ok: true, pairs: WORD_PAIRS.length, version: 'v2-routes-check' });
+  });
+
   app.get('/api/pairs', (req, res) => {
     res.json(WORD_PAIRS);
+    console.log('served /api/pairs -> ' + WORD_PAIRS.length + ' pairs');
   });
 
   app.get('/api/meta', (req, res) => {
@@ -467,6 +472,8 @@ function createGameServer() {
     out.push({ urls: turnUrls.split(','), username: turnUser, credential: turnPass });
     res.json(out);
   });
+
+  console.log('routes registered: /api/hello /api/pairs /api/meta /api/ice /ca.crt');
 
   app.get('/ca.crt', (req, res) => {
     if (!authorityPem) { res.status(404).send('Certificate not ready yet.'); return; }
